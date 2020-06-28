@@ -99,7 +99,7 @@ predictions_glm %>%
   geom_tile(show.legend = FALSE) +
   geom_text(aes(label = n), colour = "white", alpha = 1, size = 8)
 ```
-![alt text](https://github.com/JulMeh/houseprices/blob/master/Rf.png "Rf")
+<img width="350" alt="Rplot_logr_con" src="Rplot_logr_con.png">
 
 #### Random Forest
 
