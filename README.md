@@ -99,7 +99,7 @@ predictions_glm %>%
   geom_tile(show.legend = FALSE) +
   geom_text(aes(label = n), colour = "white", alpha = 1, size = 8)
 ```
-<img width="350" alt="Rplot_logr_con" src="Rplot_logr_con.png">
+<img width="450" alt="Rplot_logr_con" src="Rplot_logr_con.png">
 
 #### Random Forest
 
@@ -149,7 +149,8 @@ rf_model_best <- finalize_model(rf_mod, rf_param_best)
 rf_model_finalfit <- fit(rf_model_best, horror_movie ~ ., data = juiced)
 ```
 Looking at the tuning parameters
-<img width="350" alt="Rplot_RF" src="Rplot_RF.png">
+
+<img width="450" alt="Rplot_RF" src="Rplot_RF.png">
 
 7. Prediction of target variable using test data
 ```
@@ -181,4 +182,86 @@ Con_Mat %>%
   geom_tile(show.legend = FALSE) +
   geom_text(aes(label = n), colour = "white", alpha = 1, size = 8)
 ```
-<img width="350" alt="Rplot_rf_con" src="Rplot_rf_con.png">
+<img width="450" alt="Rplot_rf_con" src="Rplot_rf_con.png">
+
+#### XGBoost Model:
+
+1.-3. I decided to tune each parameter and additionally I made more specifications.
+```
+# 1) Define a parsnip model
+xgb_model <- boost_tree(
+  trees = 1000, 
+  tree_depth = tune(), min_n = tune(), 
+  loss_reduction = tune(),                     # first three: model complexity
+  sample_size = tune(), mtry = tune(),         # randomness
+  learn_rate = tune(),                         # step size
+) %>% 
+  set_engine("xgboost") %>% 
+  set_mode("classification")
+
+# 2) Define parameters using dials package
+xgb_param <- grid_latin_hypercube(
+  tree_depth(),
+  min_n(),
+  loss_reduction(),
+  sample_size = sample_prop(),
+  finalize(mtry(), all_train),
+  learn_rate(),
+  size = 30
+)
+
+# 3) Combine model and recipe using workflows package
+xgb_workflow <- 
+    workflow() %>% 
+    add_recipe(all_rec) %>% 
+    add_model(xgb_model)
+```
+To go more into detail I recommend Bradley Boehmke and Brandon Greenwell’s [tuning strategy for XGBoost](https://bradleyboehmke.github.io/HOML/gbm.html#xgb-tuning-strategy).
+
+4.
+```
+# 4) Tune the workflow using tune package
+tictoc::tic()
+doParallel::registerDoParallel()
+
+set.seed(234)
+xgb_res <- tune_grid(
+  xgb_workflow,
+  resamples = vfold,
+  grid = xgb_param,
+  control = control_grid(save_pred = TRUE)
+)
+tictoc::toc()
+```
+5.-6. I used roc_auc to evaluate each model
+```
+# 5) Evaluate tuning results
+show_best(xgb_res, "roc_auc",  n = 10)
+
+# 6) Select best model for, e.g., prediction
+xgb_param_best <- select_best(xgb_res, metric = "roc_auc" )
+xgb_model_best <- finalize_model(xgb_model, xgb_param_best)
+xgb_model_finalfit <- fit(xgb_model_best, horror_movie ~ ., data = juiced)
+```
+Looking at the tuning parameters
+
+<img width="450" alt="Rplot_xgb" src="Rplot_xgb.png">
+
+7. Prediction of target variable using test data
+```
+# 7) Predict on test data
+final_wf <- workflow() %>%
+  add_recipe(all_rec) %>%
+  add_model(xgb_model_best)
+
+final_res <- final_wf %>%
+  last_fit(all_split)
+
+final_res %>%
+  collect_metrics()
+```
+Looking at confusion matrices and the most important variables
+
+<img width="450" alt="Rplot_xgb_Con" src="Rplot_Con.png">
+
+<img width="450" alt="Rplot_xgb_vip" src="Rplot_xgb_vip.png">
