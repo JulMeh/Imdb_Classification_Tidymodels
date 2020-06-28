@@ -44,7 +44,6 @@ wf <- workflow() %>%
 test_bake <- all_prep %>%
   bake(all_test)
 ```
-
 As resampling method, I decided to do a quick k-fold cross validation instead of bootstrapping.
 ```
 vfold <- all_train %>%
@@ -100,6 +99,7 @@ predictions_glm %>%
   geom_tile(show.legend = FALSE) +
   geom_text(aes(label = n), colour = "white", alpha = 1, size = 8)
 ```
+![alt text](https://github.com/JulMeh/houseprices/blob/master/Rf.png "Rf")
 
 #### Random Forest
 
