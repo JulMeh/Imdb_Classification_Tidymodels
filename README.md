@@ -149,6 +149,7 @@ rf_model_best <- finalize_model(rf_mod, rf_param_best)
 rf_model_finalfit <- fit(rf_model_best, horror_movie ~ ., data = juiced)
 ```
 Looking at the tuning parameters
+<img width="350" alt="Rplot_RF" src="Rplot_RF.png">
 
 7. Prediction of target variable using test data
 ```
@@ -180,3 +181,4 @@ Con_Mat %>%
   geom_tile(show.legend = FALSE) +
   geom_text(aes(label = n), colour = "white", alpha = 1, size = 8)
 ```
+<img width="350" alt="Rplot_rf_con" src="Rplot_rf_con.png">
