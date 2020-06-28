@@ -106,11 +106,77 @@ predictions_glm %>%
 Random Forest:
 
 1.-3. I decide to tune mtry and min_n. Additionally I did some more specifications.
-
+```
+# 1) Define a parsnip model
+rf_mod <- rand_forest(
+  mtry = tune(),
+  trees = 1000,
+  min_n = tune()) %>%
+  set_mode("classification") %>%
+  set_engine("ranger")
+ 
+ # 2) Is not necessary
+ 
+ # 3) Combine model and recipe using workflows package
+tune_wf <- workflow() %>%
+  add_recipe(all_rec) %>%
+  add_model(rf_mod)
+```
 4.
+```
+# 4) Tune the workflow using tune package
+doParallel::registerDoParallel()
 
+tictoc::tic()
+set.seed(51069)
+tune_res <- tune_grid(
+  tune_wf,
+  resamples = vfold,
+  grid = 10
+)
+tictoc::toc()
+
+tune_res
+```
 5.-6. I used roc_auc to evaluate each model
+```
+# 5) Evaluate tuning results
+show_best(tune_res, "roc_auc", n = 10)
+
+# 6) Select best model for, e.g., prediction
+rf_param_best <- select_best(tune_res, metric = "roc_auc")
+rf_model_best <- finalize_model(rf_mod, rf_param_best)
+rf_model_finalfit <- fit(rf_model_best, horror_movie ~ ., data = juiced)
+```
+Looking at the tuning parameters
 
 7. Prediction of target variable using test data
+```
+# 7) Predict on test data
+test_prep <- all_prep %>%
+  bake(all_test)
 
-8)    Finally, save the prediction
+final_wf <- workflow() %>%
+  add_recipe(all_rec) %>%
+  add_model(rf_model_best)
+
+final_res <- final_wf %>%
+  last_fit(all_split)
+```
+Looking at the accuracy of the model and the the confusion matrices
+```
+final_res %>%
+  collect_metrics()
+
+Con_Mat <- final_res$.predictions 
+Con_Mat <- as.data.frame(Con_Mat)%>%
+  select(.pred_class, horror_movie)
+  
+Con_Mat %>%
+  conf_mat( horror_movie,.pred_class) %>%
+  pluck(1) %>%
+  as_tibble() %>%
+  ggplot(aes(Prediction, Truth, alpha = n)) +
+  geom_tile(show.legend = FALSE) +
+  geom_text(aes(label = n), colour = "white", alpha = 1, size = 8)
+```
