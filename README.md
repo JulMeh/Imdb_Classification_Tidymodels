@@ -262,7 +262,7 @@ final_res %>%
 ```
 Looking at confusion matrices and the most important variables
 
-<img width="450" alt="Rplot_xgb_Con" src="Rplot_xgb_Con.png">
+<img width="450" alt="Rplot_xgb_con" src="Rplot_xgb_con.png">
 
 <img width="450" alt="Rplot_xgb_vip" src="Rplot_xgb_vip.png">
  
@@ -273,9 +273,8 @@ Looking at confusion matrices and the most important variables
 -	XGB: 0.8801587
 
 #### Confusion Matrices:
-<img width="450" alt="Rplot_logr_con" src="Rplot_logr_con.png">
-<img width="450" alt="Rplot_rf_con" src="Rplot_rf_con.png">
-<img width="450" alt="Rplot_xgb_Con" src="Rplot_xgb_Con.png">
+<img width="900" alt="Rplot_logr_con" src="Rplot_con.png">
+
 
 ## Resume:
 The results are very interesting. I thought that these projects could be difficult but I saw a possibility to develop my skills and to deal with a topic I enjoy - this project was a success.
