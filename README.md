@@ -270,7 +270,7 @@ Looking at confusion matrices and the most important variables
 #### Accuracy:
 -	Log: 0.8809524
 -	RF
--	XGB
+-	XGB: 0.8801587
 
 #### Confusion Matrices:
 <img width="450" alt="Rplot_logr_con" src="Rplot_logr_con.png">
