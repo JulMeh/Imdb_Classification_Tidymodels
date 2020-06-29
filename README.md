@@ -265,4 +265,17 @@ Looking at confusion matrices and the most important variables
 <img width="450" alt="Rplot_xgb_Con" src="Rplot_xgb_Con.png">
 
 <img width="450" alt="Rplot_xgb_vip" src="Rplot_xgb_vip.png">
-  
+ 
+### Compare the models
+#### Accuracy:
+-	Log
+-	RF
+-	XGB
+
+#### Confusion Matrices:
+<img width="450" alt="Rplot_logr_Con" src="Rplot_logr_Con.png">
+<img width="450" alt="Rplot_rf_Con" src="Rplot_rf_Con.png">
+<img width="450" alt="Rplot_xgb_Con" src="Rplot_xgb_Con.png">
+
+## Resume:
+The results are very interesting. I thought that these projects could be difficult but I saw a possibility to develop my skills and to deal with a topic I enjoy - this project was a success.
