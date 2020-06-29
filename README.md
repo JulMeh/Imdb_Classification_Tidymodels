@@ -273,8 +273,8 @@ Looking at confusion matrices and the most important variables
 -	XGB
 
 #### Confusion Matrices:
-<img width="450" alt="Rplot_logr_Con" src="Rplot_logr_Con.png">
-<img width="450" alt="Rplot_rf_Con" src="Rplot_rf_Con.png">
+<img width="450" alt="Rplot_logr_con" src="Rplot_logr_con.png">
+<img width="450" alt="Rplot_rf_con" src="Rplot_rf_con.png">
 <img width="450" alt="Rplot_xgb_Con" src="Rplot_xgb_Con.png">
 
 ## Resume:
