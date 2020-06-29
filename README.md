@@ -107,7 +107,7 @@ Random Forest:
 
 1.-3. I decide to tune mtry and min_n. Additionally I did some more specifications.
 ```
-# 1) Define a parsnip model
+# 1.
 rf_mod <- rand_forest(
   mtry = tune(),
   trees = 1000,
@@ -115,16 +115,16 @@ rf_mod <- rand_forest(
   set_mode("classification") %>%
   set_engine("ranger")
  
- # 2) Is not necessary
+ # 2. Is not necessary
  
- # 3) Combine model and recipe using workflows package
+ # 3.
 tune_wf <- workflow() %>%
   add_recipe(all_rec) %>%
   add_model(rf_mod)
 ```
-4.
+4. Tune the workflow using tune package
 ```
-# 4) Tune the workflow using tune package
+# 4.
 doParallel::registerDoParallel()
 
 tictoc::tic()
@@ -140,10 +140,10 @@ tune_res
 ```
 5.-6. I used roc_auc to evaluate each model
 ```
-# 5) Evaluate tuning results
+# 5.
 show_best(tune_res, "roc_auc", n = 10)
 
-# 6) Select best model for, e.g., prediction
+# 6.
 rf_param_best <- select_best(tune_res, metric = "roc_auc")
 rf_model_best <- finalize_model(rf_mod, rf_param_best)
 rf_model_finalfit <- fit(rf_model_best, horror_movie ~ ., data = juiced)
@@ -154,7 +154,7 @@ Looking at the tuning parameters
 
 7. Prediction of target variable using test data
 ```
-# 7) Predict on test data
+# 7.
 test_prep <- all_prep %>%
   bake(all_test)
 
@@ -188,7 +188,7 @@ Con_Mat %>%
 
 1.-3. I decided to tune each parameter and additionally I made more specifications.
 ```
-# 1) Define a parsnip model
+# 1.
 xgb_model <- boost_tree(
   trees = 1000, 
   tree_depth = tune(), min_n = tune(), 
@@ -199,7 +199,7 @@ xgb_model <- boost_tree(
   set_engine("xgboost") %>% 
   set_mode("classification")
 
-# 2) Define parameters using dials package
+# 2.
 xgb_param <- grid_latin_hypercube(
   tree_depth(),
   min_n(),
@@ -210,7 +210,7 @@ xgb_param <- grid_latin_hypercube(
   size = 30
 )
 
-# 3) Combine model and recipe using workflows package
+# 3.
 xgb_workflow <- 
     workflow() %>% 
     add_recipe(all_rec) %>% 
@@ -218,9 +218,9 @@ xgb_workflow <-
 ```
 To go more into detail I recommend Bradley Boehmke and Brandon Greenwell’s [tuning strategy for XGBoost](https://bradleyboehmke.github.io/HOML/gbm.html#xgb-tuning-strategy).
 
-4.
+4. Tune the workflow using tune package
 ```
-# 4) Tune the workflow using tune package
+# 4. 
 tictoc::tic()
 doParallel::registerDoParallel()
 
@@ -235,10 +235,10 @@ tictoc::toc()
 ```
 5.-6. I used roc_auc to evaluate each model
 ```
-# 5) Evaluate tuning results
+# 5.
 show_best(xgb_res, "roc_auc",  n = 10)
 
-# 6) Select best model for, e.g., prediction
+# 6.
 xgb_param_best <- select_best(xgb_res, metric = "roc_auc" )
 xgb_model_best <- finalize_model(xgb_model, xgb_param_best)
 xgb_model_finalfit <- fit(xgb_model_best, horror_movie ~ ., data = juiced)
@@ -249,7 +249,7 @@ Looking at the tuning parameters
 
 7. Prediction of target variable using test data
 ```
-# 7) Predict on test data
+# 7.
 final_wf <- workflow() %>%
   add_recipe(all_rec) %>%
   add_model(xgb_model_best)
@@ -279,3 +279,4 @@ Looking at confusion matrices and the most important variables
 
 ## Resume:
 The results are very interesting. I thought that these projects could be difficult but I saw a possibility to develop my skills and to deal with a topic I enjoy - this project was a success.
+
