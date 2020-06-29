@@ -8,7 +8,7 @@ In this project I deal with:
 - Logistic Regression, Random Forest, XGBoost
 - Tidymodles
 
-With my web scraper I have managed not only to load data from one page but also to pull data from linked pages. I highly recommend rvest for web scraping. This is an excellent way to get data form the web. My scraper works for the top 250 movies of imdb, but since I need a lot of data for my project and since it is very time consuming to load the data of the 5000 movies, I was looking for a finished data set. For this reason, I started the ML part of this project with a data set from XY.
+With my web scraper I have managed not only to load data from one page but also to pull data from linked pages. I highly recommend rvest for web scraping. This is an excellent way to get data form the web. My scraper works for the top 250 movies of imdb, but since I need a lot of data for my project and since it is very time consuming to load the data of the 5000 movies, I was looking for a finished data set. For this reason, I started the ML part of this project with a data set from [Yueming](https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset).
 
 ## Parts of me EDA
 After a quick skim() I got a first overview of the dataset. In the following I analysed NA values, skewness, correlations and I plotted each numeric and factor variable with the help of loops.
