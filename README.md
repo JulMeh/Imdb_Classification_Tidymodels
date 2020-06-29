@@ -269,7 +269,7 @@ Looking at confusion matrices and the most important variables
 ### Compare the models
 #### Accuracy:
 -	Log: 0.8809524
--	RF
+-	RF: 0.8841270	
 -	XGB: 0.8801587
 
 #### Confusion Matrices:
